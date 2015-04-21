@@ -8,16 +8,23 @@ TrafficLight::TrafficLight(QWidget *parent) :
 {
     ui->setupUi(this);
 
-    connect(ui->startButton, SIGNAL(clicked()), this, SLOT(start()));
-    connect(ui->stopButton, SIGNAL(clicked()), this, SLOT(stop()));
+    ui->startButton->setCheckable(true);
+    ui->stopButton->setCheckable(true);
 
-    runTraffic();
+    connect(ui->startButton, SIGNAL(toggled(bool)), this, SLOT(start(bool)));
+    connect(ui->stopButton, SIGNAL(toggled(bool)), this, SLOT(stopSlot(bool)));
+    connect(this, SIGNAL(stopSign(bool)), ui->startButton, SLOT(setChecked(bool)));
 
 }
 
-void TrafficLight::runTraffic()
+TrafficLight::~TrafficLight()
 {
-    while(this->run)
+    delete ui;
+}
+
+void TrafficLight::start(bool run)
+{
+    /*while(this->run)
     {
         QThread::sleep(1);
         ui->greenRadio->setChecked(true);
@@ -27,20 +34,10 @@ void TrafficLight::runTraffic()
         ui->redRadio->setChecked(true);
         QThread::sleep(1);
         ui->yellowRadio->setChecked(true);
-    }
+    }*/
 }
 
-TrafficLight::~TrafficLight()
+void TrafficLight::stopSlot(bool stop)
 {
-    delete ui;
-}
-
-void TrafficLight::stop()
-{
-    this->run = false;
-}
-
-void TrafficLight::start()
-{
-    this->run = true;
+    emit stopSign(!stop);
 }

@@ -13,16 +13,18 @@ class TrafficLight : public QWidget
 
 public:
     explicit TrafficLight(QWidget *parent = 0);
-    void runTraffic();
     ~TrafficLight();
+
+signals:
+    void stopSign(bool releaseButton);
 
 private:
     Ui::TrafficLight *ui;
-    bool run;
+
 
 private slots:
-    void start();
-    void stop();
+    void start(bool run);
+    void stopSlot(bool stop);
 
 };
 
